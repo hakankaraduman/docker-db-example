@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  app:
+    image: hakankaraduman/postgre-test
+    build:
+      context: .
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=dbname
+      - POSTGRES_HOST=pg
+    volumes:
+      - ./src:/app
+    ports:
+      - 80:80
+    depends_on:
+      - pg
+
+  pg:
+    image: postgres:9.6-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=secret
+      - POSTGRED_DB=dbname
+    volumes:
+      - ./sql/create_table.sql:/docker-entrypoint-initdb.d/create_table.sql
